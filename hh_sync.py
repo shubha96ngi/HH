@@ -48,8 +48,8 @@ def HH(V,m,n,h,s,I_DBS):
     return V,m,n,h,s,Isyn #_exci,Isyn_inhi
 
 import multiprocessing as mp 
-quant_proc = np.max((mp.cpu_count()-1,1))
-pool = mp.Pool(processes=quant_proc)
+quant_proc = np.max((mp.cpu_count()-1,1)) # 47 output 
+pool = mp.Pool(processes=quant_proc) 
 
 ####################
 l = 1 # I want to change this from 1 to 10000
