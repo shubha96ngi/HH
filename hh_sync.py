@@ -58,18 +58,38 @@ t_pre = np.zeros((l*5000,100))
 V1 = np.zeros((l*5000,100))
 s1 = np.zeros((l*5000,100))
 Isyn_all = np.zeros((l*5000,100))
+# without multiprocessing working code 
+# import time
+# st = time.time()
+# for t in range(l*5000):
+#     V,m,n,h,s,Isyn=  HH(V,m,n,h,s,I_DBS)
+#     V1[t,:] = V
+#     Isyn_all[t] = Isyn
+#     s1[t] = s
+#     if t>2:
+#         for i in range(100):
+#             if V1[t-2,i]<V1[t-1,i] and V1[t-1,i]> V1[t,i]:
+#                 t_pre[t,i] = t 
+#                 s_pre[t,i] =1 
+# et = time.time()
+# print(et-st)
+
+############something wrong in implementation ???????
 import time
 st = time.time()
-for t in range(l*5000):
-    V,m,n,h,s,Isyn=  HH(V,m,n,h,s,I_DBS)
-    V1[t,:] = V
-    Isyn_all[t] = Isyn
-    s1[t] = s
-    if t>2:
-        for i in range(100):
-            if V1[t-2,i]<V1[t-1,i] and V1[t-1,i]> V1[t,i]:
-                t_pre[t,i] = t 
-                s_pre[t,i] =1 
+def OneTrial(void):
+    for t in range(l*5000):
+        V,m,n,h,s,Isyn=  HH(V,m,n,h,s,I_DBS)
+        V1[t,:] = V
+        Isyn_all[t] = Isyn
+        s1[t] = s
+        if t>2:
+            for i in range(100):
+                if V1[t-2,i]<V1[t-1,i] and V1[t-1,i]> V1[t,i]:
+                    t_pre[t,i] = t 
+                    s_pre[t,i] =1 
+    return s_pre
+All_spikes = pool.map(OneTrial,np.zeros(l))
 et = time.time()
 print(et-st)
 
